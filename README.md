@@ -4,7 +4,7 @@ Easily convert Ground Truth outputs into other industry standard formats.
 
 ## Install dependencies for test
 ```
-sudo pip install -e .[test]
+pip install -e .[test]
 ```
 
 ## Usage
