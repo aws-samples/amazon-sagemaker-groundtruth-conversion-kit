@@ -1,11 +1,29 @@
-## My Project
+## SageMaker Ground Truth Conversion Kit
 
-TODO: Fill this README out!
+Easily convert Ground Truth outputs into other industry standard formats.
 
-Be sure to:
+## Install dependencies for test
+```
+sudo pip install -e .[test]
+```
 
-* Change the title in this README
-* Edit your repository description on GitHub
+## Usage
+
+```
+job_name = "gt-converter-demo-job"
+converter = CocoConverter()
+converter.convert_job(job_name, output_coco_json_path="output.json")
+```
+
+## Testing
+```
+pytest -s
+```
+
+## Formatting
+```
+black .
+```
 
 ## Security
 
