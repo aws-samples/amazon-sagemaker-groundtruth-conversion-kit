@@ -256,6 +256,85 @@ class CocoConverter(Converter):
         with open(output_coco_json_path, "w") as f:
             json.dump(coco_json, f)
 
+    def _convert_video_tracking_manifest(self, manifest_path, job_name, output_coco_json_path):
+        """
+        Converts a single video tracking manifest file into COCO format.
+        :param manifest_path: Path of the GT manifest file
+        :param job_name: Name of the GT job
+        :param output_coco_json_path: Output path for converted COCO json.
+        """
+        # image_id = 0 # -> frame_id 
+        seq_id = 1 # sequence_id, starts from 1 in the GT input manifest
+        
+        
+        sequences = {}
+
+        # assuming each output manifest for GT points to one SeqLabel.json which is what we need
+        
+        for output_manifest in self.manifest_reader(manifest_path):
+            seq_label_path = output_manifest[job_name+'-ref']
+            print("\nProcessing sequence: "+str(seq_id))
+            print("Frames: ", end='')
+            category_ids = {}
+
+            for frame in self.tracking_manifest_reader(seq_label_path):
+                
+                annotation_id = 0
+                annotations = []
+                images = []
+                frame_id = frame["frame-no"]
+                file_name= frame["frame"]
+                print(frame_id, end=' ')
+                
+
+                for annotation in frame["annotations"]:
+
+                    w = annotation["width"]
+                    h = annotation["height"]
+                    #
+                    images.append(
+                        {
+                            "file_name": file_name,
+                            "height": h,
+                            "width": w,
+                            "id": frame_id,
+                        }
+                    )
+
+                    #
+                    coco_bbox = {
+                        "iscrowd": 0,
+                        "image_id": frame_id,
+                        "category_id": annotation["class-id"],
+                        "id": annotation["object-id"],
+                        "bbox": (annotation["left"], annotation["top"], annotation["width"], annotation["height"]),
+                        "area": annotation["width"] * annotation["height"],
+                    }
+
+                    annotations.append(coco_bbox)
+                    annotation_id += 1
+                    category_ids.update(
+                        {"supercategory": annotation["object-name"].split(":")[0],
+                        "id":annotation["object-id"],
+                        "name":annotation["object-name"]}
+                    )  # TODO: Verify if most common format is COCO for object tracking?
+
+
+
+                coco_json = {
+                    "type": "instances",
+                    "images": images,
+                    "categories": category_ids,
+                    "annotations": annotations,
+                }
+
+            sequences[seq_id] = coco_json
+            seq_id+=1
+
+        with open(output_coco_json_path, "w") as f:
+            json.dump(sequences, f)
+
+
     def convert_job(self, job_name, output_coco_json_path):
         """
         Converts a SageMaker Ground Truth job's manifest file to COCO format.
@@ -265,11 +344,12 @@ class CocoConverter(Converter):
         job_description = self.sm_client.describe_labeling_job(LabelingJobName=job_name)
         job_state = job_description["LabelingJobStatus"]
         job_task_keywords = job_description["HumanTaskConfig"]["TaskKeywords"]
+        
 
         if job_state == "Completed":
-            if "Images" not in job_task_keywords:
+            if "Images" not in job_task_keywords and "Video" not in job_task_keywords:
                 raise NotImplementedError(
-                    "GT Conversion only supports image labeling tasks at the moment."
+                    "GT Conversion only supports image and video labeling tasks at the moment."
                 )
 
             manifest_path = job_description["LabelingJobOutput"]["OutputDatasetS3Uri"]
@@ -282,6 +362,12 @@ class CocoConverter(Converter):
                 self._convert_segmentation_manifest(
                     manifest_path, job_name, output_coco_json_path
                 )
+            
+            elif "Video" in job_task_keywords and "tracking" in job_task_keywords:
+                self._convert_video_tracking_manifest(
+                    manifest_path, job_name, output_coco_json_path
+                )
+
             else:
                 raise ValueError(
                     "Could not determine the type of labeling job. Currently, Bounding Box and Semantic Segmentation are supported."
