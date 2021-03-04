@@ -69,9 +69,11 @@ def test_videotracking_job_conversion(tmpdir):
     """
     This test will only pass with credentials for GT labeling job and S3 bucket.
     """
-    job_name = "gt-converter-demo-job-video-tracking"
+    job_name = "MOT20example-clone"
     converter = CocoConverter()
     converter.convert_job(job_name, output_coco_json_path=tmpdir + "output.json")
 
     with open(tmpdir + "output.json", "r") as outfile:
         print(outfile.readlines())
+
+# test_videotracking_job_conversion("/tmp/")

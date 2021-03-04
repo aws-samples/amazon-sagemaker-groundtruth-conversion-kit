@@ -265,8 +265,6 @@ class CocoConverter(Converter):
         """
         # image_id = 0 # -> frame_id 
         seq_id = 1 # sequence_id, starts from 1 in the GT input manifest
-        
-        
         sequences = {}
 
         # assuming each output manifest for GT points to one SeqLabel.json which is what we need
@@ -328,7 +326,7 @@ class CocoConverter(Converter):
                     "annotations": annotations,
                 }
 
-            sequences[seq_id] = coco_json
+            sequences["sequence-"+str(seq_id)] = coco_json
             seq_id+=1
 
         with open(output_coco_json_path, "w") as f:
