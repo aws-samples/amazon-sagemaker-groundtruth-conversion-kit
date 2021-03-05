@@ -76,4 +76,8 @@ def test_videotracking_job_conversion(tmpdir):
     with open(tmpdir + "output.json", "r") as outfile:
         print(outfile.readlines())
 
-# test_videotracking_job_conversion("/tmp/")
+
+
+
+
+test_videotracking_job_conversion("/tmp/")

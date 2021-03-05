@@ -274,6 +274,7 @@ class CocoConverter(Converter):
             print("\nProcessing sequence: "+str(seq_id))
             print("Frames: ", end='')
             category_ids = {}
+            sequences["sequence-"+str(seq_id)]=[]
 
             for frame in self.tracking_manifest_reader(seq_label_path):
                 
@@ -326,7 +327,7 @@ class CocoConverter(Converter):
                     "annotations": annotations,
                 } 
 
-            sequences["sequence-"+str(seq_id)] = coco_json 
+                sequences["sequence-"+str(seq_id)].append(coco_json) 
             seq_id+=1 
 
         with open(output_coco_json_path, "w") as f:
