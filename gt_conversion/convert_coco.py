@@ -324,10 +324,10 @@ class CocoConverter(Converter):
                     "images": images,
                     "categories": category_ids,
                     "annotations": annotations,
-                }
+                } 
 
             sequences["sequence-"+str(seq_id)] = coco_json 
-            seq_id+=1
+            seq_id+=1 
 
         with open(output_coco_json_path, "w") as f:
             json.dump(sequences, f)
