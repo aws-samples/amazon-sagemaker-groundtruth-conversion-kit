@@ -45,11 +45,11 @@ class Converter(abc.ABC):
             with open(localpathname, "wb") as f:
                 self.s3_client.download_fileobj(bucket, key, f)
                 manifest_path = localpathname
-            
+
             # counting lines for progressbar
             with open(localpathname) as f:
                 count = len(list(f))
-            
+
             return manifest_path, True, count
 
         else:
@@ -60,7 +60,9 @@ class Converter(abc.ABC):
         Generator to return each image GT annotations
         :param manifest_path: Path of manifest file
         """
-        manifest_path, cleanup, self.manifestcount = self._maybe_download_from_s3(manifest_path,localpathname)
+        manifest_path, cleanup, self.manifestcount = self._maybe_download_from_s3(
+            manifest_path, localpathname
+        )
 
         for line in open(manifest_path, mode="r"):
             yield json.loads(line)
@@ -68,18 +70,22 @@ class Converter(abc.ABC):
         if cleanup:
             os.remove(manifest_path)
 
-    def tracking_manifest_reader(self, manifest_path, localpathname="tracking_manifest"):
+    def tracking_manifest_reader(
+        self, manifest_path, localpathname="tracking_manifest"
+    ):
         """
         Generator to return annotationsf from each sequence of frames
         :param manifest_path: Path of manifest file
         """
 
-        manifest_path, cleanup, self.manifestcount = self._maybe_download_from_s3(manifest_path,localpathname)
+        manifest_path, cleanup, self.manifestcount = self._maybe_download_from_s3(
+            manifest_path, localpathname
+        )
 
-        for annotation in json.load(open(manifest_path, mode="r"))['tracking-annotations']:
+        for annotation in json.load(open(manifest_path, mode="r"))[
+            "tracking-annotations"
+        ]:
             yield annotation
 
         if cleanup:
             os.remove(manifest_path)
-
-
