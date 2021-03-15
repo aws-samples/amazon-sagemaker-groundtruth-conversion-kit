@@ -77,7 +77,4 @@ def test_videotracking_job_conversion(tmpdir):
         print(outfile.readlines())
 
 
-
-
-
 test_videotracking_job_conversion("/tmp/")
