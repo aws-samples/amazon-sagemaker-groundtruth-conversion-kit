@@ -16,7 +16,7 @@ import abc
 import json
 import boto3
 
-from gt_conversion.utils import split_s3_bucket_key
+from gt_converter.utils import split_s3_bucket_key
 
 
 class Converter(abc.ABC):

@@ -15,7 +15,7 @@ from skimage import io as skio
 from skimage import img_as_ubyte
 from skimage.color import rgba2rgb
 
-from gt_conversion.convert_coco import CocoConverter
+from gt_converter.convert_coco import CocoConverter
 
 
 def test_segmentated_image():

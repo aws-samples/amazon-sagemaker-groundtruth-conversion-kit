@@ -30,7 +30,7 @@ extras = {"test": (["flake8", "pytest", "black", "flaky"],)}
 
 
 setup(
-    name="gt_conversion",
+    name="gt_converter",
     version=read_version(),
     description=__doc__,
     packages=find_packages(),

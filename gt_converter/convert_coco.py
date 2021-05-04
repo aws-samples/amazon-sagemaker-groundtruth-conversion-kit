@@ -9,8 +9,8 @@ from skimage import img_as_ubyte
 from skimage.color import rgba2rgb
 from shapely.geometry import Polygon, MultiPolygon
 
-from gt_conversion.converter import Converter
-from gt_conversion.utils import split_s3_bucket_key
+from gt_converter.converter import Converter
+from gt_converter.utils import split_s3_bucket_key
 import tqdm
 
 
