@@ -36,7 +36,7 @@ setup(
     packages=find_packages(),
     long_description=read("README.md"),
     author="Amazon Web Services",
-    url="https://github.com/aws/",  # TODO: Fix this when known
+    url="https://github.com/aws-samples/amazon-sagemaker-groundtruth-conversion-kit",
     license="Apache License 2.0",
     keywords="Sagemaker",
     classifiers=[
