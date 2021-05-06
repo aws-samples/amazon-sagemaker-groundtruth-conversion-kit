@@ -1,0 +1,26 @@
+---
+name: sagemaker-gt-conversion-kit-release
+
+on:
+  release:
+    types: [published]
+    tags:
+      - v*
+
+jobs:
+  release-wheel:
+    name: Build release wheel
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Build and release wheel
+        run: |
+          pip install wheel
+          python setup.py bdist_wheel
+      - uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_token }}
