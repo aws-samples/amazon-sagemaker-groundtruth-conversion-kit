@@ -1,4 +1,7 @@
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs) <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs) 
+[![PyPI Status Badge](https://badge.fury.io/py/gt-converter.svg)](https://pypi.org/project/gt-converter/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/gt-converter)](https://pypi.org/project/gt-converter/)
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
 
 
